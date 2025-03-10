@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id "org.jetbrains.kotlin.jvm" version "$kotlin_version"
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://repo.marcloud.net/releases/'}
+}
+
+dependencies {
+    compileOnly('com.github.opai-client:opensource-components:-SNAPSHOT')
+    compileOnly 'org.lwjgl:lwjgl:2.9.4-nightly'
+
+    // Kotlin
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
+}
+
+java {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+group = 'neko.sm'
+version = project.extension_version
+
+shadowJar {
+    setDestinationDirectory(rootProject.file("out"))
+    archiveClassifier.set("")
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+
+    exclude 'META-INF/maven/**'
+    exclude 'META-INF/versions/**'
+}
+
+kotlin {
+    jvmToolchain(8)
+}
+
+jar {
+    dependsOn(shadowJar)
+}
+
+clean {
+    // Clean 'out' fold
+    file('out').deleteDir()
+}

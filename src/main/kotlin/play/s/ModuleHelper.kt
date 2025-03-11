@@ -35,7 +35,7 @@ object ModuleHelper : ExtensionModule("Helper", "", EnumModuleCategory.MISC), Ev
         }
 
     private val damageBind = API.valueManager
-        .createKeyBind("Damage Ball", 21)
+        .createKeyBind("Damage", 21)
         .also {
             it.setHiddenPredicate {
                 !jump.value
